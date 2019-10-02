@@ -20,11 +20,11 @@ $query = "CREATE TABLE IF NOT EXISTS `forms` (`id` INT AUTO_INCREMENT, `title` V
 if (!$mysqli->query($query) == TRUE) {
     echo $mysqli->error;
 }
-$query = "CREATE TABLE IF NOT EXISTS `fields` (`id` INT AUTO_INCREMENT, `text` VARCHAR(300) NOT NULL, `type` VARCHAR(8) NOT NULL, `formId` INT, PRIMARY KEY(`id`), FOREIGN KEY(`formId`) REFERENCES `forms`(`id`))";
+$query = "CREATE TABLE IF NOT EXISTS `fields` (`id` INT AUTO_INCREMENT, `text` VARCHAR(300) NOT NULL, `type` VARCHAR(8) NOT NULL, `required` BOOLEAN, `formId` INT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formId`) REFERENCES `forms`(`id`))";
 if (!$mysqli->query($query) == TRUE) {
     echo $mysqli->error;
 }
-$query = "CREATE TABLE IF NOT EXISTS `choices` (`id` INT AUTO_INCREMENT, `text` VARCHAR(300) NOT NULL, PRIMARY KEY(`id`), `fieldId` INT, FOREIGN KEY(`fieldId`) REFERENCES `fields`(`id`))";
+$query = "CREATE TABLE IF NOT EXISTS `choices` (`id` INT AUTO_INCREMENT, `text` VARCHAR(300) NOT NULL, PRIMARY KEY(`id`), `fieldId` INT NOT NULL, FOREIGN KEY(`fieldId`) REFERENCES `fields`(`id`))";
 if (!$mysqli->query($query) == TRUE) {
     echo $mysqli->error;
 }

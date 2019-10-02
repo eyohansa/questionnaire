@@ -21,9 +21,7 @@ if ($stmt = $mysqli->prepare("SELECT * FROM forms")) {
     $i = 0;
     while ($stmt->fetch()) {
         $new_form = new Form();
-        $new_form->id = $id;
-        $new_form->title = $title;
-        $new_form->date = $date;
+        $new_form->create($id, $title, $date);
         $forms[$i] = $new_form;
         $i++;
     }
@@ -33,27 +31,39 @@ if ($stmt = $mysqli->prepare("SELECT * FROM forms")) {
 
 <div class="container">
     <h2>Daftar Form</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Judul</th>
-                <th>Tanggal</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($forms as $form) {
-                ?>
+    <div class="row">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="/forms.php">Daftar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/addform.php">Baru</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td><?php echo $form->id ?></td>
-                    <td><?php echo $form->title ?></td>
-                    <td><?php echo $form->date ?></td>
-                    <td><a class="btn btn-link" href="editform.php?id=<?php echo $form->id ?>">Edit</a>
-                        <a class="btn btn-link" href="fillform.php?id=<?php echo $form->id ?>">Isi</a></td>
+                    <th>ID</th>
+                    <th>Judul</th>
+                    <th>Tanggal</th>
+                    <th></th>
                 </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($forms as $form) {
+                    ?>
+                    <tr>
+                        <td><?php echo $form->id ?></td>
+                        <td><?php echo $form->title ?></td>
+                        <td><?php echo $form->date ?></td>
+                        <td><a class="btn btn-link" href="editform.php?id=<?php echo $form->id ?>">Edit</a>
+                            <a class="btn btn-link" href="fillform.php?id=<?php echo $form->id ?>">Isi</a></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 <?php include("footer.php") ?>
