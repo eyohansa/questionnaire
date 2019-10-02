@@ -28,6 +28,14 @@ $query = "CREATE TABLE IF NOT EXISTS `choices` (`id` INT AUTO_INCREMENT, `text` 
 if (!$mysqli->query($query) == TRUE) {
     echo $mysqli->error;
 }
+$query = "CREATE TABLE IF NOT EXISTS `respondents` (`id` INT AUTO_INCREMENT, `name` VARCHAR(300) NOT NULL, PRIMARY KEY(`id`))";
+if (!$mysqli->query($query) == true) {
+    echo $mysqli->error;
+}
+$query = "CREATE TABLE IF NOT EXISTS `respondent_forms`(`id` INT AUTO_INCREMENT, `fieldId` INT NOT NULL, `answer` VARCHAR(300), `respondentId` INT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`fieldId`) REFERENCES `fields`(`id`), FOREIGN KEY(`respondentId`) REFERENCES `respondents`(`id`), UNIQUE KEY(`respondentId`, `fieldId`))";
+if (!$mysqli->query($query) == true) {
+    echo $mysqli->error;
+}
 $mysqli->close();
 
 include("header.php");
