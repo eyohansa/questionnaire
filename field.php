@@ -8,6 +8,7 @@ class Field
     public $field_text = "A form field";
     public $field_type = "text";
     public $required = false;
+    public $form_id;
 
     function create($id, $text, $type, $required)
     {
@@ -30,7 +31,7 @@ class Field
     }
 
     function delete() {
-        $mysqli = new mysqli("localhost", "root", "", "poll");
+        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         if ($stmt = $mysqli->prepare("DELETE FROM poll WHERE id=?")) {
             $stmt->bind_param("s", $this->id);
             $stmt->execute();
@@ -38,7 +39,7 @@ class Field
     }
 
     function save($form_id) {
-        $mysqli = new mysqli("localhost", "root", "", "poll");
+        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $prepared = "INSERT INTO fields(type, text, required, formId) VALUES (?, ?, ?, ?)";
         if ($stmt = $mysqli->prepare($prepared)) {
             $stmt->bind_param("ssss", $this->field_type, $this->field_text, $this->required, $form_id);
@@ -50,11 +51,11 @@ class Field
         }
     }
 
-    function duplicate() {
-        $mysqli = new mysqli("localhost", "root", "", "poll");
-        $prepared = "INSERT INTO fields (text, type, required) VALUES(?, ?, ?)";
+    function duplicate($form_id) {
+        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        $prepared = "INSERT INTO fields (text, type, required) VALUES(?, ?, ?, ?)";
         if ($stmt = $mysqli->prepare($prepared)) {
-            $stmt->bind_param("sss", $this->field_text, $this->field_type, $this->required);
+            $stmt->bind_param("sss", $this->field_text, $this->field_type, $this->required, $form_id);
             $stmt->execute();
             if ($stmt->error) {
                 printf("Error: %s.\n", $stmt->error);

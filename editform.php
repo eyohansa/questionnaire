@@ -1,6 +1,6 @@
 <?php
 
-include("header.php");
+require("header.php");
 
 if (isset($_POST["formId"])) {
     $_GET["id"] = $_POST["formId"];
@@ -25,17 +25,24 @@ if (isset($_POST["text"])) {
     $new_field->save($form_id);
 }
 
-$mysqli = new mysqli("localhost", "root", "", "poll");
+if (isset($_POST["command"]) && $_POST["command"] == "duplicate") {
+    $duplicating_field_id = $_POST["fieldId"];
+    duplicate_field($duplicating_field_id);
+}
+
+$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 if ($stmt = $mysqli->prepare("SELECT id, type, text, required FROM fields WHERE formId=?")) {
     $stmt->bind_param("s", $form_id);
     $stmt->execute();
     $stmt->bind_result($id, $type, $text, $required);
     $i = 0;
     while ($stmt->fetch()) {
-        $data = new Field;
-        $data->create($id, $text, $type, $required);
-        $fields[$i] = $data;
-        $i++;
+        $fields[$i] = array(
+            "id" => $id,
+            "type" => $type,
+            "text" => $text,
+            "required" => $required
+        );
     }
     if ($stmt->error) {
         printf("Error: %s.\n", $stmt->error);
@@ -75,11 +82,12 @@ if ($stmt = $mysqli->prepare("SELECT title FROM forms WHERE id=?")) {
                 <table class="table">
                     <?php foreach ($fields as $field) { ?>
                         <tr>
-                            <td><?php echo $field->field_text ?></td>
+                            <td><?php echo $field["text"] ?></td>
                             <td>
-                                <form action="editform.php" method-"post">
+                                <form action="editform.php" method="post">
                                     <input type="hidden" name="formId" value="<?php echo $form_id ?>">
-                                    <input type="hidden" name="fieldId" value="<?php echo $field->id?>">
+                                    <input type="hidden" name="fieldId" value="<?php echo $field["id"]?>">
+                                    <input type="hidden" name="command" value="duplicate">
                                     <button class="btn btn-link">Duplicate</button>
                                 </form>
                             </td>

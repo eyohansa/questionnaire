@@ -1,4 +1,6 @@
 <?php
+
+require_once("config.php");
 require_once("field.php");
 
 class Form
@@ -24,7 +26,7 @@ class Form
 
     function add_field($new_field)
     {
-        $mysqli = new mysqli("localhost", "root", "", "poll");
+        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $prepared = "INSERT INTO fields (type, text) VALUES (?, ?)";
         if ($stmt = $mysqli->prepare($prepared)) {
             $stmt->bind_param("ss", $new_field->field_type, $new_field->field_text);
@@ -33,7 +35,7 @@ class Form
     }
 
     function save() {
-        $mysqli = new mysqli("localhost", "root", "", "poll");
+        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $prepared = "INSERT INTO forms (title, date) VALUES (?, ?)";
         if ($stmt = $mysqli->prepare($prepared)) {
             $stmt->bind_param("ss", $this->title, date("m-d-Y"));

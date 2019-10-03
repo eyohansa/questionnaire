@@ -4,7 +4,7 @@ include("header.php");
 
 $form_id = $_GET["id"];
 
-$mysqli = new mysqli("localhost", "root", "", "poll");
+$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 $prepared =  "SELECT type, text, required FROM fields WHERE formId=?";
 if ($stmt = $mysqli->prepare($prepared)) {
     $stmt->bind_param("s",$form_id);

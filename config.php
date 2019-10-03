@@ -1,6 +1,6 @@
 <?php
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$db_name = "poll";
+define("DB_HOST", "localhost");
+define("DB_USER", "root");
+define("DB_PASSWORD", "");
+define("DB_NAME", "poll");
