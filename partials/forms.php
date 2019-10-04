@@ -23,6 +23,7 @@ $forms = get_forms();
                 </td>
                 <td><?= $form["title"] ?></td>
                 <td><?= $form["date"] ?></td>
+                <td><a class="btn btn-link btn-sm" href="/fillform.php?id=<?= $form["id"] ?>">Isi</a></td>
             </tr>
         <?php endforeach ?>
     </tbody>

@@ -24,7 +24,6 @@ function get_forms()
 
 function get_form($id)
 {
-    $form;
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     if ($stmt = $mysqli->prepare("SELECT id, title, date FROM forms WHERE id=?")) {
         $stmt->bind_param("s", $id);
@@ -34,11 +33,41 @@ function get_form($id)
         if ($stmt->error) {
             printf("Error: %s.\n", $stmt->error);
         }
-        $form = new Form;
-        $form->create($id, $title, $date);
         $stmt->close();
+        return array(
+            "id" => $id,
+            "title" => $title,
+            "date" => $date
+        );
     }
-    return $form;
+    return array();
+}
+
+function get_fields($form_id) {
+    $data = array();
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($stmt = $mysqli->prepare("SELECT id, type, text, required FROM fields WHERE formId=?")) {
+        $stmt->bind_param("s", $form_id);
+        $stmt->execute();
+        $stmt->bind_result($id, $type, $text, $required);
+        $i = 0;
+        while($stmt->fetch()) {
+            $data[$i] = array(
+                "id" => $id,
+                "type" => $type,
+                "text" => $text,
+                "required" => $required
+            );
+            $i++;
+        }
+
+        if ($stmt->error) {
+            printf("Error: %s.\n", $stmt->error);
+        }
+        $stmt->close();
+        return $data;
+    }
+    return $data;
 }
 
 function get_field($field_id)
@@ -66,6 +95,23 @@ function get_field($field_id)
         
     }
     return $data;
+}
+
+function get_field_count($form_id) {
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $prepared = "SELECT COUNT(id) AS  NumOfFields FROM fields WHERE formId=?";
+    if ($stmt = $mysqli->prepare($prepared))
+    {
+        $stmt->bind_param("s", $form_id);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        if ($stmt->error) {
+            printf("Error: &s.\n", $stmt->error);
+        }
+        return isset($count)? $count : 0;
+    }
+    return 0;
 }
 
 function delete_field($field_id) {

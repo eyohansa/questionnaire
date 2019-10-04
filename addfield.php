@@ -2,7 +2,7 @@
 define("field_types", [
     "text",
     "textarea",
-    "multi",
+    "radio",
     "checkbox",
     "dropdown",
     "file",

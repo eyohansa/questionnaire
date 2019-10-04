@@ -10,7 +10,6 @@ if (isset($_POST["formId"])) {
 } else {
     $form_id = 1;
 }
-$fields = [];
 
 if (isset($_POST["text"])) {
     $new_field = new Field;
@@ -35,35 +34,8 @@ if (isset($_POST["command"])) {
     }
 }
 
-$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-if ($stmt = $mysqli->prepare("SELECT id, type, text, required FROM fields WHERE formId=?")) {
-    $stmt->bind_param("s", $form_id);
-    $stmt->execute();
-    $stmt->bind_result($id, $type, $text, $required);
-    $i = 0;
-    while ($stmt->fetch()) {
-        $fields[$i] = array(
-            "id" => $id,
-            "type" => $type,
-            "text" => $text,
-            "required" => $required
-        );
-        $i++;
-    }
-    if ($stmt->error) {
-        printf("Error: %s.\n", $stmt->error);
-    }
-    $stmt->close();
-}
-
-$form_title = "";
-if ($stmt = $mysqli->prepare("SELECT title FROM forms WHERE id=?")) {
-    $stmt->bind_param("s", $form_id);
-    $stmt->execute();
-    $stmt->bind_result($form_title);
-    $stmt->fetch();
-    $stmt->close();
-}
+$fields = get_fields($form_id);
+$form_title = get_form($form_id)["title"];
 
 ?>
 <div class="container">
@@ -78,7 +50,7 @@ if ($stmt = $mysqli->prepare("SELECT title FROM forms WHERE id=?")) {
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="/addfield.php?formId=<?php echo $form_id ?>">Field Baru</a>
+                <a class="nav-link" href="/addfield.php?formId=<?= $form_id ?>">Field Baru</a>
             </li>
         </ul>
     </div>
@@ -91,8 +63,8 @@ if ($stmt = $mysqli->prepare("SELECT title FROM forms WHERE id=?")) {
                             <td><?= $field["text"] ?></td>
                             <td>
                                 <form action="editform.php" method="post">
-                                    <input type="hidden" name="formId" value="<?php echo $form_id ?>">
-                                    <input type="hidden" name="fieldId" value="<?php echo $field["id"] ?>">
+                                    <input type="hidden" name="formId" value="<?= $form_id ?>">
+                                    <input type="hidden" name="fieldId" value="<?= $field["id"] ?>">
                                     <input type="hidden" name="command" value="duplicate">
                                     <button class="btn btn-sm btn-link">Duplicate</button>
                                 </form>
