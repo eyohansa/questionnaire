@@ -70,7 +70,7 @@ function get_field($field_id)
 
 function delete_field($field_id) {
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-    if ($stmt = $mysqli->prepare("DELETE FROM fields WHERE id=>")) {
+    if ($stmt = $mysqli->prepare("DELETE FROM fields WHERE id=?")) {
         $stmt->bind_param("s", $field_id);
         $stmt->execute();
         if ($stmt->error) {

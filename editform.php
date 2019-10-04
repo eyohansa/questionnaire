@@ -25,9 +25,14 @@ if (isset($_POST["text"])) {
     $new_field->save($form_id);
 }
 
-if (isset($_POST["command"]) && $_POST["command"] == "duplicate") {
-    $duplicating_field_id = $_POST["fieldId"];
-    duplicate_field($duplicating_field_id);
+if (isset($_POST["command"])) {
+    if ($_POST["command"] == "duplicate") {
+        $duplicating_field_id = $_POST["fieldId"];
+        duplicate_field($duplicating_field_id);
+    }
+    else if ($_POST["comamnd"] = "delete") {
+        delete_field($_POST["fieldId"]);
+    }
 }
 
 $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -86,9 +91,17 @@ if ($stmt = $mysqli->prepare("SELECT title FROM forms WHERE id=?")) {
                             <td>
                                 <form action="editform.php" method="post">
                                     <input type="hidden" name="formId" value="<?php echo $form_id ?>">
-                                    <input type="hidden" name="fieldId" value="<?php echo $field["id"]?>">
+                                    <input type="hidden" name="fieldId" value="<?php echo $field["id"] ?>">
                                     <input type="hidden" name="command" value="duplicate">
-                                    <button class="btn btn-link">Duplicate</button>
+                                    <button class="btn btn-sm btn-link">Duplicate</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="editform.php" method="post">
+                                    <input type="hidden" name="formId" value="<?= $form_id ?>">
+                                    <input type="hidden" name="fieldId" value="<?= $field["id"] ?>">
+                                    <input type="hidden" name="command" value="delete">
+                                    <button class=" btn btn-sm btn-link">Hapus</button>
                                 </form>
                             </td>
                         </tr>
