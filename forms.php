@@ -42,28 +42,9 @@ if ($stmt = $mysqli->prepare("SELECT * FROM forms")) {
         </ul>
     </div>
     <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Judul</th>
-                    <th>Tanggal</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($forms as $form) {
-                    ?>
-                    <tr>
-                        <td><?php echo $form->id ?></td>
-                        <td><?php echo $form->title ?></td>
-                        <td><?php echo $form->date ?></td>
-                        <td><a class="btn btn-link" href="editform.php?id=<?php echo $form->id ?>">Edit</a>
-                            <a class="btn btn-link" href="fillform.php?id=<?php echo $form->id ?>">Isi</a></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+        <div class="col">
+            <?php include("partials/forms.php") ?>
+        </div>
     </div>
 </div>
 <?php include("footer.php") ?>

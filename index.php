@@ -39,19 +39,30 @@ if (!$mysqli->query($query) == true) {
 $mysqli->close();
 
 include("header.php");
+
+$forms = get_forms();
+
 ?>
 <div class="container">
-    <table class="table">
-        <?php
-        foreach ($_SESSION["forms"] as $form) {
-            ?>
-            <tr>
-                <td><?php echo $form->id ?></td>
-            </tr>
-        <?php } ?>
-    </table>
+    <div class="row">
+        <div class="col">
+            <h2>Poll</h2>
+        </div>
+    </div>
 
-    <a href="addform.php">New Form</a>
-    <a href="forms.php">Daftar Form</a>
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" href="forms.php">Daftar Form</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="addform.php">New Form</a>
+        </li>
+    </ul>
+
+    <div class="row">
+        <div class="col">
+            <?php include("partials/forms.php") ?>
+        </div>
+    </div>
 </div>
 <?php include("footer.php") ?>

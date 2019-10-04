@@ -61,7 +61,7 @@ if ($stmt = $mysqli->prepare("SELECT title FROM forms WHERE id=?")) {
 
 ?>
 <div class="container">
-    <h2><?php echo $form_title ?></h2>
+    <h2><?= $form_title ?></h2>
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
@@ -82,7 +82,7 @@ if ($stmt = $mysqli->prepare("SELECT title FROM forms WHERE id=?")) {
                 <table class="table">
                     <?php foreach ($fields as $field) { ?>
                         <tr>
-                            <td><?php echo $field["text"] ?></td>
+                            <td><?= $field["text"] ?></td>
                             <td>
                                 <form action="editform.php" method="post">
                                     <input type="hidden" name="formId" value="<?php echo $form_id ?>">

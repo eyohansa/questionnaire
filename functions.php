@@ -2,6 +2,26 @@
 
 require_once("config.php");
 
+function get_forms() 
+{
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($stmt = $mysqli->prepare("SELECT id, title, date FROM forms")) {
+        $stmt->execute();
+        $stmt->bind_result($id, $title, $date);
+        $i = 0;
+        while($stmt->fetch()) {
+            $forms[$i] = array(
+                "id" => $id,
+                "title" => $title,
+                "date" => $date
+            );
+            $i++;
+        }
+        return $forms;
+    }
+    return array();
+}
+
 function get_form($id)
 {
     $form;
