@@ -52,10 +52,11 @@ class Field
     }
 
     function duplicate($form_id) {
+        var_dump($this);
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        $prepared = "INSERT INTO fields (text, type, required) VALUES(?, ?, ?, ?)";
+        $prepared = "INSERT INTO fields (text, type, required, formId) VALUES(?, ?, ?, ?)";
         if ($stmt = $mysqli->prepare($prepared)) {
-            $stmt->bind_param("sss", $this->field_text, $this->field_type, $this->required, $form_id);
+            $stmt->bind_param("ssss", $this->field_text, $this->field_type, $this->required, $form_id);
             $stmt->execute();
             if ($stmt->error) {
                 printf("Error: %s.\n", $stmt->error);

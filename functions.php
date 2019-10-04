@@ -96,9 +96,16 @@ function add_choice($field_id, $text)
 function duplicate_field($field_id)
 { 
     $data = get_field($field_id);
-    $field = new Field;
-    $field->create($field_id, $data["text"], $data["type"], $data["required"]);
-    $field->duplicate($data["formId"]);
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $prepared = "INSERT INTO fields (type, text, required, formId) VALUES (?, ?, ?, ?)";
+    if ($stmt = $mysqli->prepare($prepared)) {
+        $stmt->bind_param("ssss", $data["type"], $data["text"], $data["required"], $data["formId"]);
+        $stmt->execute();
+        if ($stmt->error) {
+            printf("Error: %s\n", $stmt->error());
+        }
+        $stmt->close();
+    }
 }
 
 function submit_form($form_id, $answers)

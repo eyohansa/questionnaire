@@ -48,6 +48,7 @@ if ($stmt = $mysqli->prepare("SELECT id, type, text, required FROM fields WHERE 
             "text" => $text,
             "required" => $required
         );
+        $i++;
     }
     if ($stmt->error) {
         printf("Error: %s.\n", $stmt->error);
