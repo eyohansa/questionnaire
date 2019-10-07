@@ -139,6 +139,25 @@ function add_choice($field_id, $text)
     }
 }
 
+function get_choices($field_id) {
+    $choices = [];
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($stmt = $mysqli->prepare("SELECT id, text FROM choices WHERE fieldId=?")) {
+        $stmt->bind_param("s", $field_id);
+        $stmt->execute();
+        $stmt->bind_result($id, $text);
+        $i = 0;
+        while($stmt->fetch()) {
+            $choices[$i] = array(
+                "id" => $id,
+                "text" => $text
+            );
+            $i++;
+        }
+        $stmt->close();
+    }
+}
+
 function duplicate_field($field_id)
 { 
     $data = get_field($field_id);

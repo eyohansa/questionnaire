@@ -60,7 +60,12 @@ $form_title = get_form($form_id)["title"];
                 <table class="table">
                     <?php foreach ($fields as $field) { ?>
                         <tr>
-                            <td><?= $field["text"] ?></td>
+                            <td>
+                                <a href="/editfield.php?fieldId=<?= $field["id"] ?>">
+                                <?= $field["text"] ?>
+                                </a>
+                            </td>
+                            
                             <td>
                                 <form action="editform.php" method="post">
                                     <input type="hidden" name="formId" value="<?= $form_id ?>">
