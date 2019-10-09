@@ -36,6 +36,7 @@ if ($stmt = $mysqli->prepare($prepared)) {
                     $choices = get_choices($field["id"]);
                     foreach($choices as $choice): ?>
                         <input type="radio" name="<?= $field["id"] ?>" value="<?= $choice["id"] ?>"> 
+                        <label><?= $choice["text"] ?></label>
                     <?php endforeach ?>
                 <?php else : ?>
                     <input class="form-control" type="<?= $field["type"] ?>" name="<?= $field["id"] ?>" <?= $field["required"] ?>>

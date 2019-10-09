@@ -156,6 +156,7 @@ function get_choices($field_id) {
         }
         $stmt->close();
     }
+    return $choices;
 }
 
 function duplicate_field($field_id)
@@ -175,6 +176,89 @@ function duplicate_field($field_id)
 
 function submit_form($form_id, $answers)
 {
-    $form = get_form($form_id);
-    var_dump($form);
+    $datetime = date("Y-m-d H:i:s");
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($stmt = $mysqli->prepare("INSERT INTO respondents (filledDate, formId) VALUES (?, ?)")) {
+        $stmt->bind_param("ss", $datetime, $form_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+    $respondent_id = $mysqli->insert_id;
+    foreach($answers as $answer) {
+        submit_answer($respondent_id, $answer["fieldId"], $answer["answer"]);
+    }
+    return $respondent_id;
+}
+
+function submit_answer($respondent_id, $field_id, $answer) {
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($stmt = $mysqli->prepare("INSERT INTO respondent_forms (fieldId, answer, respondentId) VALUES (?, ?, ?)")) {
+        $stmt->bind_param("sss", $field_id, $answer, $respondent_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+}
+
+function get_response_form_id($respondent_id)
+{
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($stmt = $mysqli->prepare("SELECT formId FROM respondents WHERE id=?")) {
+        $stmt->bind_param("s", $respondent_id);
+        $stmt->execute();
+        $stmt->bind_result($form_id);
+        $stmt->fetch();
+        $stmt->close();
+        return $form_id;
+    }
+}
+
+function get_response($respondent_id) {
+    $response = [];
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($stmt = $mysqli->prepare("SELECT id, fieldId, answer FROM respondent_forms WHERE respondentId=?")) {
+        $stmt->bind_param("s", $respondent_id);
+        $stmt->execute();
+        $stmt->bind_result($id, $fieldId, $answer);
+        while($stmt->fetch()) {
+            array_push($response, array(
+                "id" => $id,
+                "fieldId" => $fieldId,
+                "answer" => $answer
+            ));
+        }
+        $stmt->close();
+    }
+    return $response;
+}
+
+function get_answer($respondent_id, $field_id) {
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($stmt = $mysqli->prepare("SELECT answer FROM respondent_forms WHERE respondentId=? AND fieldId=?")) {
+        $stmt->bind_param("ss", $respondent_id, $field_id);
+        $stmt->execute();
+        $stmt->bind_result($answer);
+        $stmt->fetch();
+        $stmt->close();
+        return $answer;
+    }
+}
+
+function get_responses($form_id)
+{
+    $responses = [];
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($stmt = $mysqli->prepare("SELECT id, filledDate FROM respondents WHERE formId=?")) {
+        $stmt->bind_param("s", $form_id);
+        $stmt->execute();
+        $stmt->bind_result($id, $filled_date);
+        while($stmt->fetch()) {
+            array_push($responses, array(
+                "id" => $id,
+                "filledDate" => $filled_date
+            ));
+        }
+
+        $stmt->close();
+    }
+    return $responses;
 }

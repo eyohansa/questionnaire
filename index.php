@@ -7,7 +7,7 @@ session_start();
 
 $_SESSION["forms"] = [];
 
-$mysqli = new mysqli(DB_HOST, DB_NAME, DB_PASSWORD);
+$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD);
 if ($mysqli->connect_errno) {
     echo "Failed to connect to MySql: (" . $mysqli->connect_errno . ")" . $mysqli->error;
 }
@@ -29,7 +29,7 @@ $query = "CREATE TABLE IF NOT EXISTS `choices` (`id` INT AUTO_INCREMENT, `text` 
 if (!$mysqli->query($query) == TRUE) {
     echo $mysqli->error;
 }
-$query = "CREATE TABLE IF NOT EXISTS `respondents` (`id` INT AUTO_INCREMENT, `filledDate` DATETIME NOT NULL, PRIMARY KEY(`id`))";
+$query = "CREATE TABLE IF NOT EXISTS `respondents` (`id` INT AUTO_INCREMENT, `filledDate` DATETIME NOT NULL, `formId` INT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`formId`) REFERENCES `forms`(`id`))";
 if (!$mysqli->query($query) == true) {
     echo $mysqli->error;
 }

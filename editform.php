@@ -28,8 +28,7 @@ if (isset($_POST["command"])) {
     if ($_POST["command"] == "duplicate") {
         $duplicating_field_id = $_POST["fieldId"];
         duplicate_field($duplicating_field_id);
-    }
-    else if ($_POST["comamnd"] = "delete") {
+    } else if ($_POST["comamnd"] = "delete") {
         delete_field($_POST["fieldId"]);
     }
 }
@@ -52,6 +51,9 @@ $form_title = get_form($form_id)["title"];
             <li class="nav-item">
                 <a class="nav-link" href="/addfield.php?formId=<?= $form_id ?>">Field Baru</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/responses.php?id=<?= $form_id ?>">Jawaban</a>
+            </li>
         </ul>
     </div>
     <div class="row">
@@ -62,10 +64,10 @@ $form_title = get_form($form_id)["title"];
                         <tr>
                             <td>
                                 <a href="/editfield.php?fieldId=<?= $field["id"] ?>">
-                                <?= $field["text"] ?>
+                                    <?= $field["text"] ?>
                                 </a>
                             </td>
-                            
+
                             <td>
                                 <form action="editform.php" method="post">
                                     <input type="hidden" name="formId" value="<?= $form_id ?>">

@@ -23,6 +23,7 @@ $support_choices = $field_type === "radio" || $field_type === "select";
                     <input type="text" name="text" class="form-control" value="<?= $field["text"] ?>">
                 </div>
                 <button class="btn btn-primary">Submit</button>
+                <a href="/editform?id=<?= $field["formId"] ?>" class="btn btn-secondary">Balik</a>
             </form>
         </div>
     </div>
