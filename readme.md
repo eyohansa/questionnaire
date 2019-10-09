@@ -1,20 +1,11 @@
-# Kriteria
-1. Halaman list form yang sudah pernah dibuat
-2. Halaman create new form, dengan kententuan:
-	+ Komponent yang bisa ditambah secara dinamik:
-		- Short Answer
-		- Paragraf
-		- Multiple Choice
-		- Checkbox
-		- Dropdown
-		- File Upload
-		- Date
-		- Time
-	+ Ada fitur untuk required, remove dan duplicate
-3. Ada halaman untuk mengisi dan melihat isian oleh responden
-4. Gunakan PHP (native/framework CI) dan bootstrap min v.3
-5. Penilai dilihat dari segi:
-	- Tampilan/Keindahan
-	- Kompleksitas/kelengkapan fitur
-	- Struktur Database
-	- Cara mengcoding
+A Google Form-like app made in native PHP7.
+
+This is a learning project. It might be faster and more reliable to recreate this using a PHP Framework like Laravel/CodeIgniter.
+
+The project does not use object-oriented programming style. I might refactor it at later date.
+
+[Bootstrap 4](https://www.getbootstrap.com) is used for UI.
+
+For a better Form-like experience, authentication and authorization still need to be added. Look into an OAuth2.0 option from Google/Facebook/Twitter/Microsoft.
+
+Another improvement to be made is replacing database access using mysqli to PDO. It should allow the app to change its database without changing much of the code.
