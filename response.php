@@ -11,7 +11,9 @@ $fields = get_fields($form_id);
 ?>
 
 <div class="container">
-    <h2><?= $form["title"] ?></h2>
+    <h2>
+        <a href="/responses?id=<?= $form_id ?>"><?= $form["title"] ?></a>
+    </h2>
     <div class="row">
         <div class="col">
             <form>
